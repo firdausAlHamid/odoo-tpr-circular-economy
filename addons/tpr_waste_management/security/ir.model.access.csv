@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tpr_remnant_cut_user_read,tpr.remnant.cut.user.read,model_tpr_remnant_cut,base.group_user,1,0,0,0
+access_tpr_remnant_cut_operator,tpr.remnant.cut.operator,model_tpr_remnant_cut,group_tpr_waste_user,1,1,1,0
+access_tpr_remnant_cut_manager,tpr.remnant.cut.manager,model_tpr_remnant_cut,group_tpr_waste_manager,1,1,1,1
+access_tpr_mfa_analysis_user,tpr.mfa.analysis.user,model_tpr_mfa_analysis,group_tpr_waste_user,1,1,1,0
+access_tpr_mfa_analysis_manager,tpr.mfa.analysis.manager,model_tpr_mfa_analysis,group_tpr_waste_manager,1,1,1,1

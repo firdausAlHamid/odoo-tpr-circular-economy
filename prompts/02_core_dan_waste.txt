@@ -1,0 +1,9 @@
+Lanjutkan dari fondasi Odoo 19 Community yang sudah berjalan. Baca docs/requirements.md dan audit versi terlebih dahulu. Fokus tahap ini adalah core dan versi pertama Waste Management untuk Daus.
+
+Periksa source model dan API Odoo 19 yang benar-benar terpasang sebelum menulis addon. Buat tpr_circular_core dan tpr_waste_management sebagai addon yang bisa diinstal. Data yang dibutuhkan meliputi keluarga material, grade, ketebalan, ukuran, berat, metode pengukuran, lokasi, lot potongan, asal MO atau proyek, serta status pemeriksaan. Hubungkan data potongan ke stock.move yang sudah selesai. Saldo fisik tetap berasal dari transaksi stock standar.
+
+Implementasikan dulu satu alur: hasil sisa dari produksi masuk ke lokasi karantina, diperiksa petugas berwenang, kemudian disetujui sebagai reusable atau scrap fisik. Buat form dan list yang bisa dipakai pengguna. Data uji harus diberi label simulasi. Jangan langsung membangun seluruh dashboard atau mengklaim Manufacturing Feriangga sudah disepakati.
+
+Sisa yang masih disimpan atau akan dijual tetap merupakan stok fisik. Odoo stock.scrap hanya dipakai untuk pengeluaran inventaris sebagai pembuangan. Produksi menggunakan by-product untuk keluaran sisa yang disimpan agar pencatatan tidak menggandakan stok. Metadata ukuran tidak boleh dianggap membuktikan kelayakan teknis tanpa persetujuan perusahaan.
+
+Sediakan akses dan aturan company, manifest yang benar, serta pengujian install dan upgrade di database tpr_test terpisah. Uji fungsi yang sudah diimplementasikan dan tampilkan bukti perintah serta hasilnya. Kalau ada kendala runtime, catat kendala dan bagian yang belum diuji. Simpan format data integrasi yang perlu dibahas dengan Feriangga di docs/integration_contract.md.

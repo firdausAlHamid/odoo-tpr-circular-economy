@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_tpr_mfa_analysis_list" model="ir.ui.view">
+        <field name="name">tpr.mfa.analysis.list</field>
+        <field name="model">tpr.mfa.analysis</field>
+        <field name="arch" type="xml">
+            <list string="Analisis Aliran Material (MFA)">
+                <field name="name"/>
+                <field name="material_family_id"/>
+                <field name="production_id" optional="show"/>
+                <field name="analysis_date"/>
+                <field name="total_input_kg" sum="Total Input (kg)"/>
+                <field name="product_output_kg" sum="Total Produk (kg)"/>
+                <field name="remnant_output_kg" sum="Total Remnant (kg)"/>
+                <field name="scrap_output_kg" sum="Total Scrap (kg)"/>
+                <field name="yield_pct" widget="percentage" optional="show"/>
+                <field name="remnant_pct" widget="percentage" optional="show"/>
+                <field name="residual_kg" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_tpr_mfa_analysis_form" model="ir.ui.view">
+        <field name="name">tpr.mfa.analysis.form</field>
+        <field name="model">tpr.mfa.analysis</field>
+        <field name="arch" type="xml">
+            <form string="Analisis Aliran Material (MFA) &amp; Sankey Diagram">
+                <header>
+                    <button name="action_load_from_mo"
+                            string="Tarik Data dari MO Terpilih"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="not production_id"/>
+                    <button name="action_load_demo_benchmark"
+                            string="Muat Acuan MO A (100 kg)"
+                            type="object"
+                            class="btn-secondary"/>
+                    <button name="action_load_demo_reuse"
+                            string="Muat Acuan Reuse MO B (8 kg)"
+                            type="object"
+                            class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Judul Analisis MFA"/>
+                        <h1>
+                            <field name="name" placeholder="misal: MFA Fabrikasi Tangki Mixer - Pelat SS400 6mm"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Batas Analisis &amp; Objek">
+                            <field name="material_family_id" options="{'no_create': True}"/>
+                            <field name="production_id" options="{'no_create': True}" placeholder="Pilih MO (opsional)..."/>
+                            <field name="analysis_date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Ringkasan Neraca Aliran Massa (kg)">
+                            <field name="total_input_kg"/>
+                            <field name="product_output_kg"/>
+                            <field name="remnant_output_kg"/>
+                            <field name="scrap_output_kg"/>
+                            <field name="loss_kg"/>
+                            <field name="residual_kg"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="sankey_tab" string="Visualisasi Diagram Sankey MFA">
+                            <field name="sankey_chart_html" nolabel="1" options="{'cssReadonly': true}"/>
+                        </page>
+
+                        <page name="balance_tab" string="Rincian Parameter Aliran Massa">
+                            <group>
+                                <group string="Sisi Masukan (Inputs)">
+                                    <field name="raw_input_kg"/>
+                                    <field name="reused_input_kg"/>
+                                    <field name="reused_input_pct"/>
+                                </group>
+                                <group string="Sisi Keluaran (Outputs &amp; Sinks)">
+                                    <field name="yield_pct"/>
+                                    <field name="remnant_pct"/>
+                                    <field name="scrap_pct"/>
+                                    <field name="loss_pct"/>
+                                </group>
+                            </group>
+                            <group string="Catatan Pengukuran &amp; Metodologi">
+                                <field name="notes" nolabel="1" placeholder="Catatan metode penimbangan, spesifikasi alat, atau asumsi kerf loss..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_tpr_mfa_analysis" model="ir.actions.act_window">
+        <field name="name">Diagram Aliran Massa (Sankey)</field>
+        <field name="res_model">tpr.mfa.analysis</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat analisis Material Flow Analysis (MFA) pertama Anda!
+            </p>
+            <p>
+                Visualisasikan aliran massa pelat mulai dari bahan baku baru, pemotongan, produk jadi, remnant sisa, scrap fisik, hingga loop sirkularitas menggunakan Diagram Sankey interaktif.
+            </p>
+        </field>
+    </record>
+</odoo>

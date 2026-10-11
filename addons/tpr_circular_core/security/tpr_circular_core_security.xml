@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Multi-Company Rules for Material Family -->
+        <record id="tpr_material_family_comp_rule" model="ir.rule">
+            <field name="name">Material Family Multi-Company</field>
+            <field name="model_id" ref="model_tpr_material_family"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Multi-Company Rules for Material Grade -->
+        <record id="tpr_material_grade_comp_rule" model="ir.rule">
+            <field name="name">Material Grade Multi-Company</field>
+            <field name="model_id" ref="model_tpr_material_grade"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Multi-Company Rules for Material Thickness -->
+        <record id="tpr_material_thickness_comp_rule" model="ir.rule">
+            <field name="name">Material Thickness Multi-Company</field>
+            <field name="model_id" ref="model_tpr_material_thickness"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

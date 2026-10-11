@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-Level Root Menu -->
+    <menuitem id="menu_tpr_waste_root"
+              name="Waste Management"
+              sequence="45"
+              web_icon="stock,static/description/icon.png"/>
+
+    <!-- Submenu: Operasional Potongan -->
+    <menuitem id="menu_tpr_remnant_operations"
+              name="Sisa Potongan (Remnants)"
+              parent="menu_tpr_waste_root"
+              sequence="10"/>
+
+    <menuitem id="menu_tpr_remnant_all"
+              name="Semua Sisa Potongan"
+              parent="menu_tpr_remnant_operations"
+              action="action_tpr_remnant_cut"
+              sequence="10"/>
+
+    <menuitem id="menu_tpr_remnant_quarantine_menu"
+              name="Perlu Pemeriksaan (Karantina)"
+              parent="menu_tpr_remnant_operations"
+              action="action_tpr_remnant_quarantine"
+              sequence="20"/>
+
+    <menuitem id="menu_tpr_remnant_reusable_menu"
+              name="Potongan Layak Reusable"
+              parent="menu_tpr_remnant_operations"
+              action="action_tpr_remnant_reusable"
+              sequence="30"/>
+
+    <menuitem id="menu_tpr_remnant_scrap_menu"
+              name="Scrap Fisik"
+              parent="menu_tpr_remnant_operations"
+              action="action_tpr_remnant_scrap"
+              sequence="40"/>
+
+    <!-- Submenu: Material Flow Analysis (MFA) -->
+    <menuitem id="menu_tpr_mfa_root"
+              name="Material Flow Analysis (MFA)"
+              parent="menu_tpr_waste_root"
+              sequence="20"/>
+
+    <menuitem id="menu_tpr_mfa_sankey"
+              name="Diagram Aliran Massa (Sankey)"
+              parent="menu_tpr_mfa_root"
+              action="action_tpr_mfa_analysis"
+              sequence="10"/>
+
+    <!-- Submenu: Konfigurasi Material -->
+    <menuitem id="menu_tpr_waste_config"
+              name="Konfigurasi Material"
+              parent="menu_tpr_waste_root"
+              sequence="90"/>
+
+    <menuitem id="menu_tpr_waste_config_family"
+              name="Keluarga Material"
+              parent="menu_tpr_waste_config"
+              action="tpr_circular_core.action_tpr_material_family"
+              sequence="10"/>
+
+    <menuitem id="menu_tpr_waste_config_grade"
+              name="Grade Material"
+              parent="menu_tpr_waste_config"
+              action="tpr_circular_core.action_tpr_material_grade"
+              sequence="20"/>
+
+    <menuitem id="menu_tpr_waste_config_thickness"
+              name="Ketebalan Nominal"
+              parent="menu_tpr_waste_config"
+              action="tpr_circular_core.action_tpr_material_thickness"
+              sequence="30"/>
+</odoo>

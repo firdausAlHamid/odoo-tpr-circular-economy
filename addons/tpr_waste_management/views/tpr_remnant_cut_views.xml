@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================= Search View ================= -->
+    <record id="view_tpr_remnant_cut_search" model="ir.ui.view">
+        <field name="name">tpr.remnant.cut.search</field>
+        <field name="model">tpr.remnant.cut</field>
+        <field name="arch" type="xml">
+            <search string="Pencarian Sisa Potongan">
+                <field name="name" string="Kode Potongan"/>
+                <field name="product_id" string="Material"/>
+                <field name="material_family_id"/>
+                <field name="material_grade_id"/>
+                <field name="production_id" string="Manufacturing Order"/>
+                <field name="location_id"/>
+                <filter string="Perlu Pemeriksaan (Karantina)" name="filter_quarantine" domain="[('state', '=', 'quarantine')]"/>
+                <filter string="Layak Reusable" name="filter_reusable" domain="[('inspection_result', '=', 'reusable')]"/>
+                <filter string="Scrap Fisik" name="filter_scrap" domain="[('inspection_result', '=', 'scrap')]"/>
+                <separator/>
+                <filter string="Bentuk Tidak Beraturan" name="filter_irregular" domain="[('shape', '=', 'irregular')]"/>
+                <filter string="Timbangan Fisik Aktual" name="filter_scale" domain="[('measurement_method', '=', 'scale')]"/>
+                <filter string="Potongan Turunan (Anak)" name="filter_child" domain="[('parent_piece_id', '!=', False)]"/>
+                <separator/>
+                <filter string="Data Simulasi" name="filter_simulation" domain="[('is_simulation', '=', True)]"/>
+                <filter string="Data Perusahaan" name="filter_real" domain="[('is_simulation', '=', False)]"/>
+                <group>
+                    <filter string="Material" name="group_product" domain="[]" context="{'group_by': 'product_id'}"/>
+                    <filter string="Status Potongan" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Hasil Penetapan" name="group_inspection" domain="[]" context="{'group_by': 'inspection_result'}"/>
+                    <filter string="Bentuk Geometri" name="group_shape" domain="[]" context="{'group_by': 'shape'}"/>
+                    <filter string="Metode Ukur" name="group_measurement" domain="[]" context="{'group_by': 'measurement_method'}"/>
+                    <filter string="Lokasi Stok" name="group_location" domain="[]" context="{'group_by': 'location_id'}"/>
+                    <filter string="MO Asal" name="group_production" domain="[]" context="{'group_by': 'production_id'}"/>
+                    <filter string="Potongan Induk" name="group_parent" domain="[]" context="{'group_by': 'parent_piece_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================= List View ================= -->
+    <record id="view_tpr_remnant_cut_list" model="ir.ui.view">
+        <field name="name">tpr.remnant.cut.list</field>
+        <field name="model">tpr.remnant.cut</field>
+        <field name="arch" type="xml">
+            <list string="Daftar Sisa Potongan Pelat"
+                  decoration-warning="state == 'quarantine'"
+                  decoration-success="inspection_result == 'reusable'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-info="is_simulation">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="material_grade_id" optional="show"/>
+                <field name="shape" optional="show"/>
+                <field name="length_mm"/>
+                <field name="width_mm"/>
+                <field name="thickness_mm"/>
+                <field name="weight_kg" sum="Total Berat (kg)"/>
+                <field name="measurement_method" optional="hide"/>
+                <field name="weight_deviation_pct" optional="hide"/>
+                <field name="location_id"/>
+                <field name="production_id" optional="show"/>
+                <field name="parent_piece_id" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'quarantine'"
+                       decoration-success="state == 'inspected'"/>
+                <field name="inspection_result" widget="badge"
+                       decoration-warning="inspection_result == 'pending'"
+                       decoration-success="inspection_result == 'reusable'"
+                       decoration-danger="inspection_result == 'scrap'"/>
+                <field name="is_simulation" optional="hide" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================= Form View ================= -->
+    <record id="view_tpr_remnant_cut_form" model="ir.ui.view">
+        <field name="name">tpr.remnant.cut.form</field>
+        <field name="model">tpr.remnant.cut</field>
+        <field name="arch" type="xml">
+            <form string="Catatan Sisa Potongan Pelat">
+                <header>
+                    <button name="action_send_to_quarantine"
+                            string="Kirim ke Karantina"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve_reuse"
+                            string="Setujui Reusable"
+                            type="object"
+                            class="btn-success"
+                            invisible="state != 'quarantine'"
+                            groups="tpr_waste_management.group_tpr_waste_manager"/>
+                    <button name="action_reject_to_scrap"
+                            string="Tetapkan Scrap Fisik"
+                            type="object"
+                            class="btn-danger"
+                            invisible="state != 'quarantine'"
+                            groups="tpr_waste_management.group_tpr_waste_manager"/>
+                    <button name="action_reset_to_draft"
+                            string="Kembalikan ke Draft"
+                            type="object"
+                            invisible="state not in ('quarantine', 'cancelled')"
+                            groups="tpr_waste_management.group_tpr_waste_manager"/>
+                    <button name="action_execute_relocation"
+                            string="Pindahkan Lokasi Fisik"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="not target_location_id or state == 'cancelled'"/>
+                    <button name="action_cancel"
+                            string="Batalkan"
+                            type="object"
+                            invisible="state in ('cancelled', 'inspected')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,quarantine,inspected"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Reusable" bg_color="text-bg-success" invisible="inspection_result != 'reusable'"/>
+                    <widget name="web_ribbon" title="Scrap" bg_color="text-bg-danger" invisible="inspection_result != 'scrap'"/>
+                    <widget name="web_ribbon" title="Simulasi" bg_color="text-bg-info" invisible="not is_simulation"/>
+
+                    <div class="oe_title">
+                        <label for="name" string="Kode Potongan"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Spesifikasi Material">
+                            <field name="product_id" options="{'no_create': True}"/>
+                            <field name="material_family_id"/>
+                            <field name="material_grade_id"/>
+                            <field name="material_thickness_id"/>
+                        </group>
+                        <group string="Dimensi &amp; Berat Fisik">
+                            <field name="shape"/>
+                            <label for="length_mm" string="Dimensi Geometris (P x L)"/>
+                            <div class="o_row">
+                                <field name="length_mm" class="oe_inline"/> x
+                                <field name="width_mm" class="oe_inline"/> mm
+                            </div>
+                            <field name="thickness_mm"/>
+                            <field name="area_sqm"/>
+                            <field name="measurement_method"/>
+                            <field name="weight_kg"/>
+                            <field name="theoretical_weight_kg"/>
+                            <field name="weight_deviation_pct"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Lokasi Stok Persediaan">
+                            <field name="location_id" options="{'no_create': True}"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Keterlacakan Asal (Traceability)">
+                            <field name="production_id" options="{'no_create': True}"/>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="parent_piece_id" options="{'no_create': True}"/>
+                            <field name="stock_lot_id" options="{'no_create': True}"/>
+                            <field name="source_stock_move_id"/>
+                            <field name="source_description"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="inspection_tab" string="Pemeriksaan &amp; Kelayakan Karantina">
+                            <group>
+                                <group string="Hasil Evaluasi Petugas">
+                                    <field name="inspection_result" widget="radio"/>
+                                    <field name="inspector_id"/>
+                                    <field name="inspection_date"/>
+                                </group>
+                                <group string="Pemeriksaan Cacat &amp; Kondisi">
+                                    <field name="defect_type"/>
+                                    <field name="is_simulation"/>
+                                </group>
+                            </group>
+                            <group string="Catatan Inspeksi Visual &amp; Dimensi">
+                                <field name="inspection_notes" nolabel="1" placeholder="Catatan kondisi visual, toleransi pemotongan, atau ketidaksesuaian..."/>
+                            </group>
+                            <group string="Rencana Pemanfaatan / Justifikasi">
+                                <field name="reuse_reason" nolabel="1" placeholder="Alasan kelayakan reuse atau rencana komponen yang akan dibuat..."/>
+                            </group>
+                        </page>
+
+                        <page name="child_pieces_tab" string="Potongan Turunan (Anak)" invisible="not child_piece_ids">
+                            <field name="child_piece_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="shape"/>
+                                    <field name="length_mm"/>
+                                    <field name="width_mm"/>
+                                    <field name="thickness_mm"/>
+                                    <field name="weight_kg" sum="Total Berat Anak (kg)"/>
+                                    <field name="location_id"/>
+                                    <field name="inspection_result" widget="badge"
+                                           decoration-warning="inspection_result == 'pending'"
+                                           decoration-success="inspection_result == 'reusable'"
+                                           decoration-danger="inspection_result == 'scrap'"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page name="relocation_tab" string="Relokasi Persediaan Standar">
+                            <group>
+                                <group string="Tujuan Pemindahan">
+                                    <field name="target_location_id" placeholder="Pilih lokasi tujuan rak atau area scrap"/>
+                                    <div class="text-muted" colspan="2">
+                                        Gunakan tombol 'Pindahkan Lokasi Fisik' di atas untuk memindahkan stok secara resmi via transaksi stock.move tanpa mengubah stock.quant langsung.
+                                    </div>
+                                </group>
+                                <group string="Transaksi Relokasi Terakhir">
+                                    <field name="relocation_move_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================= Actions ================= -->
+    <record id="action_tpr_remnant_cut" model="ir.actions.act_window">
+        <field name="name">Semua Sisa Potongan</field>
+        <field name="res_model">tpr.remnant.cut</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_tpr_remnant_cut_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Belum ada data sisa potongan pelat yang tercatat.
+            </p>
+            <p>
+                Catat potongan sisa pelat dari pemotongan fabrikasi atau hasil by-product Manufacturing Order.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_tpr_remnant_quarantine" model="ir.actions.act_window">
+        <field name="name">Potongan Perlu Pemeriksaan</field>
+        <field name="res_model">tpr.remnant.cut</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'quarantine')]</field>
+        <field name="context">{'default_state': 'quarantine'}</field>
+    </record>
+
+    <record id="action_tpr_remnant_reusable" model="ir.actions.act_window">
+        <field name="name">Potongan Layak Reusable</field>
+        <field name="res_model">tpr.remnant.cut</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('inspection_result', '=', 'reusable')]</field>
+        <field name="context">{'search_default_filter_reusable': 1}</field>
+    </record>
+
+    <record id="action_tpr_remnant_scrap" model="ir.actions.act_window">
+        <field name="name">Scrap Fisik Pelat</field>
+        <field name="res_model">tpr.remnant.cut</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('inspection_result', '=', 'scrap')]</field>
+        <field name="context">{'search_default_filter_scrap': 1}</field>
+    </record>
+</odoo>

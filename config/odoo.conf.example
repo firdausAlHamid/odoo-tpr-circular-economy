@@ -1,0 +1,8 @@
+[options]
+admin_passwd = CHANGE_ME_MASTER_PASSWORD
+addons_path = /mnt/extra-addons,/mnt/third-party-addons
+data_dir = /var/lib/odoo
+http_port = 8069
+log_level = info
+list_db = True
+dbfilter = ^tpr_.*$

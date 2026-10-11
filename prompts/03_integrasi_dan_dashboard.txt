@@ -1,0 +1,9 @@
+Lanjutkan sesudah pencatatan sisa dan pemeriksaan berjalan. Baca integration_contract.md, kebutuhan penelitian, dan keputusan pembagian dengan Feriangga. Pembagian yang belum disepakati dicatat sebagai usulan.
+
+Implementasikan pemakaian ulang potongan pada MO tujuan dan penyaluran scrap fisik melalui transaksi stok yang sesuai. Riwayat harus menghubungkan sumber, potongan, pemakaian, dan sisa baru bila ada. Jangan menggandakan konsumsi bahan baru dan remnant. Selaraskan data antaraddon melalui core atau extension tanpa circular dependency.
+
+Bangun laporan Waste menggunakan list, graph, dan pivot terlebih dahulu. Tampilkan stok awal, sisa diterima, reuse aktual, dispatch aktual, stok akhir, dan selisih yang belum dijelaskan dengan batas periode yang sama. Perpindahan reuse internal tidak dihitung sebagai bahan eksternal baru. Setiap angka bisa ditelusuri ke transaksi sumber. Dashboard Manufacturing mengikuti indikator dan pembagian yang benar-benar disepakati.
+
+Gunakan data simulasi yang bisa diulang untuk memverifikasi fungsi. Contoh MO A memakai 100 kg pelat, menghasilkan massa pelat produk 72 kg, remnant R1 8 kg dan R2 12 kg, scrap 6 kg, serta loss terukur dalam simulasi 2 kg. Label simulasi harus jelas. Jangan menganggap selisih yang belum dijelaskan sebagai loss terukur.
+
+Uji stok, hitungan manual, hak akses, asal dan tujuan transaksi, repeated posting, serta install dan upgrade di database test. Baru setelah angka benar, tambahkan tampilan dashboard yang lebih lengkap. Laporkan fitur yang selesai, hasil uji aktual, dan bagian yang masih membutuhkan validasi perusahaan atau keputusan bersama.

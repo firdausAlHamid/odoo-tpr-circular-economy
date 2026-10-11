@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== Material Family Views ==================== -->
+    <record id="view_tpr_material_family_list" model="ir.ui.view">
+        <field name="name">tpr.material.family.list</field>
+        <field name="model">tpr.material.family</field>
+        <field name="arch" type="xml">
+            <list string="Keluarga Material Pelat">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="density"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tpr_material_family_form" model="ir.ui.view">
+        <field name="name">tpr.material.family.form</field>
+        <field name="model">tpr.material.family</field>
+        <field name="arch" type="xml">
+            <form string="Keluarga Material Pelat">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Nama Keluarga Material"/>
+                        <h1>
+                            <field name="name" placeholder="misal: Baja Karbon (Carbon Steel)"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" placeholder="CS, SS, AL"/>
+                            <field name="density"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Pemetaan Produk Kesetaraan">
+                        <group>
+                            <field name="raw_product_id"/>
+                            <field name="remnant_product_id"/>
+                        </group>
+                        <group>
+                            <field name="scrap_product_id"/>
+                        </group>
+                    </group>
+                    <group string="Keterangan">
+                        <field name="description" nolabel="1" placeholder="Catatan spesifikasi teknis keluarga material..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tpr_material_family" model="ir.actions.act_window">
+        <field name="name">Keluarga Material</field>
+        <field name="res_model">tpr.material.family</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tambahkan keluarga material pelat pertama Anda!
+            </p>
+            <p>
+                Keluarga material mendefinisikan kelompok umum material (misal Baja Karbon) beserta massa jenisnya.
+            </p>
+        </field>
+    </record>
+
+    <!-- ==================== Material Grade Views ==================== -->
+    <record id="view_tpr_material_grade_list" model="ir.ui.view">
+        <field name="name">tpr.material.grade.list</field>
+        <field name="model">tpr.material.grade</field>
+        <field name="arch" type="xml">
+            <list string="Grade Material Pelat">
+                <field name="family_id"/>
+                <field name="name"/>
+                <field name="standard_spec"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tpr_material_grade_form" model="ir.ui.view">
+        <field name="name">tpr.material.grade.form</field>
+        <field name="model">tpr.material.grade</field>
+        <field name="arch" type="xml">
+            <form string="Grade Material Pelat">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Grade Material"/>
+                        <h1>
+                            <field name="name" placeholder="misal: SS400, ASTM A36"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="family_id"/>
+                            <field name="standard_spec" placeholder="JIS G 3101"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Keterangan">
+                        <field name="description" nolabel="1" placeholder="Catatan karakteristik grade..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tpr_material_grade" model="ir.actions.act_window">
+        <field name="name">Grade Material</field>
+        <field name="res_model">tpr.material.grade</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tambahkan grade spesifikasi material!
+            </p>
+        </field>
+    </record>
+
+    <!-- ==================== Material Thickness Views ==================== -->
+    <record id="view_tpr_material_thickness_list" model="ir.ui.view">
+        <field name="name">tpr.material.thickness.list</field>
+        <field name="model">tpr.material.thickness</field>
+        <field name="arch" type="xml">
+            <list string="Ketebalan Nominal Pelat">
+                <field name="value"/>
+                <field name="unit"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tpr_material_thickness_form" model="ir.ui.view">
+        <field name="name">tpr.material.thickness.form</field>
+        <field name="model">tpr.material.thickness</field>
+        <field name="arch" type="xml">
+            <form string="Ketebalan Nominal Pelat">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="value" string="Ketebalan Nominal"/>
+                        <h1>
+                            <field name="value" class="oe_inline"/> <field name="unit" class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tpr_material_thickness" model="ir.actions.act_window">
+        <field name="name">Ketebalan Pelat</field>
+        <field name="res_model">tpr.material.thickness</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tambahkan ketebalan nominal standar pelat!
+            </p>
+        </field>
+    </record>
+</odoo>

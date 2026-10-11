@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_form_view_inherit_plate" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.tpr.plate</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline-block">
+                    <field name="is_plate_material"/>
+                    <label for="is_plate_material"/>
+                </span>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="plate_specification" string="Spesifikasi Pelat (Metadata)" invisible="not is_plate_material">
+                    <group>
+                        <group string="Karakteristik Material">
+                            <field name="material_family_id" options="{'no_create_edit': True}"/>
+                            <field name="material_grade_id" options="{'no_create_edit': True}"/>
+                            <field name="material_thickness_id" options="{'no_create_edit': True}"/>
+                            <field name="nominal_thickness_mm"/>
+                        </group>
+                        <group string="Dimensi Standar Lembaran (mm)">
+                            <field name="standard_length_mm"/>
+                            <field name="standard_width_mm"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Catatan Sirkularitas:</strong> Dimensi dicatat dalam milimeter (mm) sebagai metadata geometris untuk perhitungan sisa potongan, sedangkan saldo persediaan fisik dikelola dalam satuan massa (kg) sesuai standard inventory.
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

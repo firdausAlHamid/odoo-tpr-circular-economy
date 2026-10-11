@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ================= Lokasi Stok Khusus Sirkularitas (Internal) ================= -->
+        <record id="location_tpr_quarantine" model="stock.location">
+            <field name="name">[SIMULASI] Karantina Sisa Produksi</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="usage">internal</field>
+        </record>
+
+        <record id="location_tpr_reusable_rack" model="stock.location">
+            <field name="name">[SIMULASI] Rak Remnant Reusable</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="usage">internal</field>
+        </record>
+
+        <record id="location_tpr_physical_scrap" model="stock.location">
+            <field name="name">[SIMULASI] Area Scrap Fisik CV TPR</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="usage">internal</field>
+        </record>
+
+        <!-- ================= Produk Material Latihan / Simulasi ================= -->
+        <record id="product_plate_ss400_6mm" model="product.product">
+            <field name="name">[SIMULASI] Pelat Baja Hitam SS400 6.0 mm</field>
+            <field name="default_code">SIM-PL-SS400-06</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="uom_id" ref="uom.product_uom_kgm"/>
+            <field name="is_plate_material">True</field>
+            <field name="material_family_id" ref="tpr_circular_core.family_carbon_steel"/>
+            <field name="material_grade_id" ref="tpr_circular_core.grade_ss400"/>
+            <field name="material_thickness_id" ref="tpr_circular_core.thickness_6mm"/>
+            <field name="standard_length_mm">6000.0</field>
+            <field name="standard_width_mm">1500.0</field>
+            <field name="description">Produk data simulasi untuk latihan alur pemotongan dan sisa CV Teknika Prima Raya.</field>
+        </record>
+
+        <record id="product_plate_ss400_10mm" model="product.product">
+            <field name="name">[SIMULASI] Pelat Baja Hitam SS400 10.0 mm</field>
+            <field name="default_code">SIM-PL-SS400-10</field>
+            <field name="type">consu</field>
+            <field name="is_storable">True</field>
+            <field name="uom_id" ref="uom.product_uom_kgm"/>
+            <field name="is_plate_material">True</field>
+            <field name="material_family_id" ref="tpr_circular_core.family_carbon_steel"/>
+            <field name="material_grade_id" ref="tpr_circular_core.grade_ss400"/>
+            <field name="material_thickness_id" ref="tpr_circular_core.thickness_10mm"/>
+            <field name="standard_length_mm">6000.0</field>
+            <field name="standard_width_mm">1500.0</field>
+            <field name="description">Produk data simulasi untuk latihan alur pemotongan dan sisa CV Teknika Prima Raya.</field>
+        </record>
+
+        <!-- ================= Contoh Data Simulasi Sisa Potongan ================= -->
+        <!-- 1. Potongan dalam Karantina (Menunggu Pemeriksaan) -->
+        <record id="demo_remnant_cut_quarantine" model="tpr.remnant.cut">
+            <field name="product_id" ref="product_plate_ss400_6mm"/>
+            <field name="shape">rectangle</field>
+            <field name="measurement_method">scale</field>
+            <field name="length_mm">1200.0</field>
+            <field name="width_mm">650.0</field>
+            <field name="thickness_mm">6.0</field>
+            <field name="weight_kg">36.7</field>
+            <field name="location_id" ref="location_tpr_quarantine"/>
+            <field name="state">quarantine</field>
+            <field name="inspection_result">pending</field>
+            <field name="source_description">Sisa pemotongan pelat web girder proyek simulasi</field>
+            <field name="is_simulation">True</field>
+        </record>
+
+        <!-- 2. Potongan Disetujui Reusable (Potongan Induk) -->
+        <record id="demo_remnant_cut_reusable" model="tpr.remnant.cut">
+            <field name="product_id" ref="product_plate_ss400_6mm"/>
+            <field name="shape">rectangle</field>
+            <field name="measurement_method">scale</field>
+            <field name="length_mm">2000.0</field>
+            <field name="width_mm">800.0</field>
+            <field name="thickness_mm">6.0</field>
+            <field name="weight_kg">75.4</field>
+            <field name="location_id" ref="location_tpr_reusable_rack"/>
+            <field name="state">inspected</field>
+            <field name="inspection_result">reusable</field>
+            <field name="defect_type">none</field>
+            <field name="inspection_notes">Permukaan rata, tepi bersih, tidak ada distorsi termal signifikan.</field>
+            <field name="reuse_reason">Ukuran cukup besar untuk komponen gusset plate atau stiffener pada pekerjaan mendatang.</field>
+            <field name="source_description">Sisa potongan lembaran utama tangki (Potongan Induk)</field>
+            <field name="is_simulation">True</field>
+        </record>
+
+        <!-- 3. Potongan Anak Hasil Pemotongan Ulang (Child Piece) -->
+        <record id="demo_remnant_cut_child" model="tpr.remnant.cut">
+            <field name="product_id" ref="product_plate_ss400_6mm"/>
+            <field name="parent_piece_id" ref="demo_remnant_cut_reusable"/>
+            <field name="shape">strip</field>
+            <field name="measurement_method">scale</field>
+            <field name="length_mm">2000.0</field>
+            <field name="width_mm">200.0</field>
+            <field name="thickness_mm">6.0</field>
+            <field name="weight_kg">18.8</field>
+            <field name="location_id" ref="location_tpr_reusable_rack"/>
+            <field name="state">inspected</field>
+            <field name="inspection_result">reusable</field>
+            <field name="defect_type">none</field>
+            <field name="inspection_notes">Strip sisa pemotongan lebar dari potongan induk, lurus dan siap pakai.</field>
+            <field name="reuse_reason">Cocok untuk strip penguat (stiffener bar).</field>
+            <field name="source_description">Sisa strip dari pemotongan potongan induk demo</field>
+            <field name="is_simulation">True</field>
+        </record>
+
+        <!-- 4. Potongan Ditetapkan Scrap Fisik -->
+        <record id="demo_remnant_cut_scrap" model="tpr.remnant.cut">
+            <field name="product_id" ref="product_plate_ss400_10mm"/>
+            <field name="shape">irregular</field>
+            <field name="measurement_method">scale</field>
+            <field name="length_mm">350.0</field>
+            <field name="width_mm">180.0</field>
+            <field name="thickness_mm">10.0</field>
+            <field name="weight_kg">4.9</field>
+            <field name="location_id" ref="location_tpr_physical_scrap"/>
+            <field name="state">inspected</field>
+            <field name="inspection_result">scrap</field>
+            <field name="defect_type">slag</field>
+            <field name="inspection_notes">Potongan kecil tidak beraturan dengan bekas slag cutting yang tebal.</field>
+            <field name="reuse_reason">Dimensi terlalu kecil untuk komponen struktural; dialokasikan ke scrap fisik untuk dijual.</field>
+            <field name="source_description">Offcut flange pemotongan CNC plasma</field>
+            <field name="is_simulation">True</field>
+        </record>
+    </data>
+</odoo>

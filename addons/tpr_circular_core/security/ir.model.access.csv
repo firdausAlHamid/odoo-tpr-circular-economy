@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tpr_material_family_user,tpr.material.family.user,model_tpr_material_family,base.group_user,1,0,0,0
+access_tpr_material_family_manager,tpr.material.family.manager,model_tpr_material_family,stock.group_stock_manager,1,1,1,1
+access_tpr_material_grade_user,tpr.material.grade.user,model_tpr_material_grade,base.group_user,1,0,0,0
+access_tpr_material_grade_manager,tpr.material.grade.manager,model_tpr_material_grade,stock.group_stock_manager,1,1,1,1
+access_tpr_material_thickness_user,tpr.material.thickness.user,model_tpr_material_thickness,base.group_user,1,0,0,0
+access_tpr_material_thickness_manager,tpr.material.thickness.manager,model_tpr_material_thickness,stock.group_stock_manager,1,1,1,1

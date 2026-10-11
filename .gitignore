@@ -1,0 +1,9 @@
+.env
+config/odoo.conf
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+*.log
+backups/

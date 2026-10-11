@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inventory > Configuration > Material Pelat -->
+    <menuitem id="menu_tpr_material_config_root"
+              name="Material Pelat"
+              parent="stock.menu_stock_config_settings"
+              sequence="35"/>
+
+    <menuitem id="menu_tpr_material_family"
+              name="Keluarga Material"
+              parent="menu_tpr_material_config_root"
+              action="action_tpr_material_family"
+              sequence="10"/>
+
+    <menuitem id="menu_tpr_material_grade"
+              name="Grade Material"
+              parent="menu_tpr_material_config_root"
+              action="action_tpr_material_grade"
+              sequence="20"/>
+
+    <menuitem id="menu_tpr_material_thickness"
+              name="Ketebalan Nominal"
+              parent="menu_tpr_material_config_root"
+              action="action_tpr_material_thickness"
+              sequence="30"/>
+</odoo>

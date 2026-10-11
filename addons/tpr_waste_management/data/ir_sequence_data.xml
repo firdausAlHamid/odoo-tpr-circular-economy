@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_tpr_remnant_cut" model="ir.sequence">
+            <field name="name">Kode Potongan Remnant</field>
+            <field name="code">tpr.remnant.cut</field>
+            <field name="prefix">RMN/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

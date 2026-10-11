@@ -1,0 +1,14 @@
+Saya Daus. Ini proyek TA Odoo 19 Community untuk CV Teknika Prima Raya. Fokus saya Waste Management dan MFA. Sisi Manufacturing masih usulan untuk dibahas dengan Feriangga.
+
+Kerjakan fondasi lokal terlebih dahulu.
+1. Baca README.md, compose.yaml, .env.example, config/odoo.conf.example, dan docs/requirements.md.
+2. Periksa OS, Docker engine, dan Docker Compose. Jika Docker belum tersedia atau belum berjalan, jelaskan langkah sesuai OS. Selesaikan konfigurasi yang tetap bisa dibuat.
+3. Siapkan .env dan config/odoo.conf melalui script setup yang sesuai. Pertahankan file yang sudah ada dan jangan tampilkan password dalam jawaban atau log.
+4. Jalankan Odoo dengan compose.yaml memakai image odoo:19.0 dan PostgreSQL 16. Periksa docker compose ps, log startup, dan odoo --version. Jangan mengganti ke latest.
+5. Jalankan scripts/check_runtime.py di dalam container. Periksa sumber contacts, stock, purchase, sale_management, mrp, project, purchase_stock, dan sale_stock.
+6. Bantu saya membuat database tpr_dev dan mengaktifkan enam aplikasi standar. Pakai data latihan terpisah dari data perusahaan. Jelaskan langkah UI jika belum bisa menjalankannya sendiri.
+7. Buat docs/version_audit.md dari bukti perintah yang benar-benar dijalankan, termasuk versi dan digest image. Bedakan file sumber yang tersedia dengan aplikasi yang benar-benar terpasang dalam database.
+
+Target tahap ini Odoo terbuka di http://localhost:8069, login berhasil, dan aplikasi standar siap untuk satu alur latihan. Modul Waste Management, MFA, dan dashboard akan dikerjakan pada tahap berikutnya. Jangan memasang addon berbayar, Enterprise, Studio, atau addon marketplace yang belum dianalisis. Jangan menghapus database atau volume yang sudah ada.
+
+Akhiri dengan status tiap target, perintah yang berhasil, langkah UI yang masih harus saya lakukan, dan blocker nyata. Jangan menyatakan startup atau instalasi berhasil tanpa bukti.
